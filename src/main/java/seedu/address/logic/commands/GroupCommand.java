@@ -16,10 +16,10 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 /**
  * Adds a person to the address book.
  */
-public class AddCommand extends UndoableCommand {
+public class GroupCommand extends UndoableCommand {
 
-    public static final String COMMAND_WORD = "add";
-    public static final String COMMAND_ALIAS = "a";
+    public static final String COMMAND_WORD = "group";
+    public static final String COMMAND_ALIAS = "g";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
             + "Parameters: "
@@ -45,7 +45,7 @@ public class AddCommand extends UndoableCommand {
     /**
      * Creates an AddCommand to add the specified {@code ReadOnlyPerson}
      */
-    public AddCommand(ReadOnlyPerson person) {
+    public GroupCommand(ReadOnlyPerson person) {
         toAdd = new Person(person);
     }
 
@@ -64,7 +64,7 @@ public class AddCommand extends UndoableCommand {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddCommand // instanceof handles nulls
-                && toAdd.equals(((AddCommand) other).toAdd));
+                || (other instanceof GroupCommand // instanceof handles nulls
+                && toAdd.equals(((GroupCommand) other).toAdd));
     }
 }
