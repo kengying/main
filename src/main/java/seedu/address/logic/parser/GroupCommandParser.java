@@ -1,28 +1,17 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_CUSTOM_FIELD;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import java.util.Optional;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.GroupCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.customfields.CustomField;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.group.GroupName;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -35,28 +24,57 @@ public class GroupCommandParser implements Parser<GroupCommand> {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
-    public GroupCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TAG, PREFIX_CUSTOM_FIELD);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME)) {
+    /**
+     * Used for initial separation of command word and args.
+     */
+    private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+
+    public GroupCommand parse(String args) throws ParseException {
+
+        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(args.trim());
+        if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, GroupCommand.MESSAGE_USAGE));
         }
 
-        try {
-            Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME)).get();
-            Phone phone = ParserUtil.parsePhone(areValuePresent(argMultimap.getValue(PREFIX_PHONE))).get();
-            Email email = ParserUtil.parseEmail(areValuePresent(argMultimap.getValue(PREFIX_EMAIL))).get();
-            Address address = ParserUtil.parseAddress(areValuePresent(argMultimap.getValue(PREFIX_ADDRESS))).get();
-            Set<CustomField> fieldsList = ParserUtil.parseCustomFields(argMultimap.getAllValues(PREFIX_CUSTOM_FIELD));
-            Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        final String commandWord = matcher.group("commandWord");
+        final String arguments = matcher.group("arguments");
+        switch (commandWord) {
 
-            ReadOnlyPerson person = new Person(name, phone, email, address, fieldsList, tagList);
+        case GroupCommand.COMMAND_CREATE_WORD:
+        case GroupCommand.COMMAND_CREATE_ALIAS:
+            System.out.print("HERE");
+           return new GroupCommandParser().parseCreate(arguments);
 
-            return new GroupCommand(person);
-        } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage(), ive);
+        case GroupCommand.COMMAND_DELETE_WORD:
+        case GroupCommand.COMMAND_DELETE_ALIAS:
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+
+        case GroupCommand.COMMAND_INSERT_WORD:
+        case GroupCommand.COMMAND_INSERT_ALIAS:
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+
+        case GroupCommand.COMMAND_REMOVE_WORD:
+        case GroupCommand.COMMAND_REMOVE_ALIAS:
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+
+        default:
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        }
+    }
+
+    public GroupCommand parseCreate(String args) throws ParseException {
+        if(!args.isEmpty()) {
+            System.out.println(args);
+            try {
+                GroupName groupName = ParserUtil.parseGroup(Optional.of(args)).get();
+
+                return new GroupCommand(groupName);
+            } catch (IllegalValueException ive) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, GroupCommand.MESSAGE_USAGE));
         }
     }
 

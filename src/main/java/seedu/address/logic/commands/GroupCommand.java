@@ -1,16 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_CUSTOM_FIELD;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.group.GroupName;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 
 /**
@@ -21,32 +15,40 @@ public class GroupCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "group";
     public static final String COMMAND_ALIAS = "g";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
-            + "Parameters: "
-            + PREFIX_NAME + "NAME "
-            + PREFIX_PHONE + "PHONE "
-            + PREFIX_EMAIL + "EMAIL "
-            + PREFIX_ADDRESS + "ADDRESS "
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " "
-            + PREFIX_NAME + "John Doe "
-            + PREFIX_PHONE + "98765432 "
-            + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
-            + PREFIX_TAG + "friends "
-            + PREFIX_TAG + "owesMoney "
-            + PREFIX_CUSTOM_FIELD + "Sports:football";
+    public static final String COMMAND_CREATE_WORD = "create";
+    public static final String COMMAND_CREATE_ALIAS = "c";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String COMMAND_DELETE_WORD = "delete";
+    public static final String COMMAND_DELETE_ALIAS = "d";
 
-    private final Person toAdd;
+    public static final String COMMAND_INSERT_WORD = "insert";
+    public static final String COMMAND_INSERT_ALIAS = "i";
+
+    public static final String COMMAND_REMOVE_WORD = "remove";
+    public static final String COMMAND_REMOVE_ALIAS = "r";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add/Delete a group to the address book or Insert/Remove a person from group. \n"
+            + "Parameters: \n"
+            + "create new group: " + COMMAND_CREATE_WORD + " GROUPNAME \n"
+            + "delete group: " + COMMAND_DELETE_WORD + " GROUPNAME \n"
+            + "insert user(s) to group: " + COMMAND_INSERT_WORD + " INDEX \n"
+            + "remove user(s) to group: " + COMMAND_REMOVE_WORD + " INDEX \n"
+            + "Example: \n"
+            + COMMAND_WORD + " " + COMMAND_CREATE_WORD + " " + "Savings  \n"
+            + COMMAND_WORD + " " + COMMAND_DELETE_WORD + " " + "Savings \n"
+            + COMMAND_ALIAS + " " + COMMAND_INSERT_WORD + " " + " 1 \n"
+            + COMMAND_ALIAS + " " + COMMAND_REMOVE_WORD + " " + " 1 \n";
+
+    public static final String MESSAGE_SUCCESS_GROUP = "New group added: %1$s";
+    public static final String MESSAGE_DUPLICATE_GROUP = "This group already exists in the address book";
+
+    private final GroupName toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code ReadOnlyPerson}
+     * Creates an CreateCommand to add the specified {@code ReadOnlyPerson}
      */
-    public GroupCommand(ReadOnlyPerson person) {
-        toAdd = new Person(person);
+    public GroupCommand(GroupName group) throws IllegalValueException {
+        toAdd = new GroupName(group);
     }
 
     @Override
@@ -54,9 +56,9 @@ public class GroupCommand extends UndoableCommand {
         requireNonNull(model);
         try {
             model.addPerson(toAdd);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+            return new CommandResult(String.format(MESSAGE_SUCCESS_GROUP, toAdd));
         } catch (DuplicatePersonException e) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(MESSAGE_SUCCESS_GROUP);
         }
 
     }
