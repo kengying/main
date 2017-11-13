@@ -195,7 +195,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 1. help
 
 *Command output* +
-1. Opened help window+
+1. Opened help window
 
 
 
