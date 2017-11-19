@@ -107,7 +107,6 @@ public class ModelManager extends ComponentManager implements Model {
     }
     //@@author
 
-    //@@author kengying
     @Override
     public List<Tag> getTagList() {
         List<Tag> listTagsWithDuplicates = new ArrayList<>();
@@ -144,7 +143,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         return listGroups;
     }
-    //@@author
 
     //@@author sofarsophie
     @Override

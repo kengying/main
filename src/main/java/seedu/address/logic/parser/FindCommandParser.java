@@ -130,7 +130,6 @@ public class FindCommandParser implements Parser<FindCommand> {
     }
     //@@author
 
-    //@@author kengying
     /**
      * Parses {@code List<String> group} into a {@code List<Group>} if {@code group} is non-empty.
      * If {@code group} contain only one element which is an empty string, it will be parsed into a
@@ -162,7 +161,6 @@ public class FindCommandParser implements Parser<FindCommand> {
                 ? Collections.emptyList() : tags;
         return Optional.of(tagList);
     }
-    //@@author
 
     //@@author syy94
     /**

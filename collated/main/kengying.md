@@ -1,5 +1,5 @@
 # kengying
-###### \java\seedu\address\logic\commands\EditCommand.java
+###### \main\java\seedu\address\logic\commands\EditCommand.java
 ``` java
         public void setGroup(Group group) {
             this.group = group;
@@ -9,7 +9,7 @@
             return Optional.ofNullable(group);
         }
 ```
-###### \java\seedu\address\logic\commands\ListCommand.java
+###### \main\java\seedu\address\logic\commands\ListCommand.java
 ``` java
 /**
  * Lists all persons/groups/tags in the address book to the user.
@@ -44,7 +44,7 @@ public class ListCommand extends Command {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\ListGroupCommand.java
+###### \main\java\seedu\address\logic\commands\ListGroupCommand.java
 ``` java
 
 /**
@@ -68,7 +68,7 @@ public class ListGroupCommand extends ListCommand {
 
 }
 ```
-###### \java\seedu\address\logic\commands\ListTagCommand.java
+###### \main\java\seedu\address\logic\commands\ListTagCommand.java
 ``` java
 
 /**
@@ -91,7 +91,7 @@ public class ListTagCommand extends ListCommand {
 
 }
 ```
-###### \java\seedu\address\logic\parser\AddCommandParser.java
+###### \main\java\seedu\address\logic\parser\AddCommandParser.java
 ``` java
     /**
      * Returns "" if prefixes contains empty values in the given
@@ -102,53 +102,19 @@ public class ListTagCommand extends ListCommand {
         return value;
     }
 ```
-###### \java\seedu\address\logic\parser\AddressBookParser.java
+###### \main\java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
         case ListCommand.COMMAND_WORD:
         case ListCommand.COMMAND_ALIAS:
             return new ListCommandParser().parse(arguments);
 ```
-###### \java\seedu\address\logic\parser\AddressBookParser.java
+###### \main\java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
     private String firstLetterToLowerCase(String commandWord) {
         return commandWord.substring(0, 1).toLowerCase() + commandWord.substring(1);
     }
 ```
-###### \java\seedu\address\logic\parser\FindCommandParser.java
-``` java
-    /**
-     * Parses {@code List<String> group} into a {@code List<Group>} if {@code group} is non-empty.
-     * If {@code group} contain only one element which is an empty string, it will be parsed into a
-     * {@code List<Group>} containing zero groups.
-     */
-    private Optional<List<Group>> parseGroupForSearch(List<String> group) throws IllegalValueException {
-        assert group != null;
-
-        if (group.isEmpty()) {
-            return Optional.empty();
-        }
-        List<String> groupList = group.size() == 1 && group.contains("")
-                ? Collections.emptyList() : group;
-        return Optional.of(ParserUtil.parseGroup(groupList));
-    }
-
-    /**
-     * Parses {@code List<String> tags} into a {@code List<Tag>} if {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
-     * {@code List<String>} containing zero tags.
-     */
-    private Optional<List<String>> parseTagForSearch(List<String> tags) throws IllegalValueException {
-        assert tags != null;
-
-        if (tags.isEmpty()) {
-            return Optional.empty();
-        }
-        List<String> tagList = tags.size() == 1 && tags.contains("")
-                ? Collections.emptyList() : tags;
-        return Optional.of(tagList);
-    }
-```
-###### \java\seedu\address\logic\parser\ListCommandParser.java
+###### \main\java\seedu\address\logic\parser\ListCommandParser.java
 ``` java
 /**
  * Parses input arguments and creates a new ListCommand object
@@ -179,7 +145,7 @@ public class ListCommandParser implements Parser<ListCommand> {
 
 }
 ```
-###### \java\seedu\address\logic\parser\ParserUtil.java
+###### \main\java\seedu\address\logic\parser\ParserUtil.java
 ``` java
     /**
      * Parses a {@code Optional<String> group} into an {@code Optional<Group>} if {@code group} is present.
@@ -203,13 +169,13 @@ public class ListCommandParser implements Parser<ListCommand> {
         return groupList;
     }
 ```
-###### \java\seedu\address\model\AddressBook.java
+###### \main\java\seedu\address\model\AddressBook.java
 ``` java
     public void setGroups(List<? extends Group> persons) {
         this.groups.setGroups(groups);
     }
 ```
-###### \java\seedu\address\model\AddressBook.java
+###### \main\java\seedu\address\model\AddressBook.java
 ``` java
     /**
      * Ensures that every group in this person:
@@ -251,14 +217,14 @@ public class ListCommandParser implements Parser<ListCommand> {
     }
 
 ```
-###### \java\seedu\address\model\AddressBook.java
+###### \main\java\seedu\address\model\AddressBook.java
 ``` java
     //// group-level operations
     public void addGroup(Group g) throws UniqueGroupList.DuplicateGroupException {
         groups.add(g);
     }
 ```
-###### \java\seedu\address\model\group\Group.java
+###### \main\java\seedu\address\model\group\Group.java
 ``` java
 /**
  * Represents a Person's group in the address book.
@@ -324,7 +290,7 @@ public class Group implements Comparable<Group>, Comparator<Group> {
 
 }
 ```
-###### \java\seedu\address\model\group\UniqueGroupList.java
+###### \main\java\seedu\address\model\group\UniqueGroupList.java
 ``` java
 /**
  * A list of groups that enforces no nulls and uniqueness between its elements.
@@ -443,46 +409,7 @@ public class UniqueGroupList implements Iterable<Group> {
 
 }
 ```
-###### \java\seedu\address\model\ModelManager.java
-``` java
-    @Override
-    public List<Tag> getTagList() {
-        List<Tag> listTagsWithDuplicates = new ArrayList<>();
-
-        filteredPersons.forEach(persons -> listTagsWithDuplicates.addAll(persons.getTags()));
-
-        List<Tag> listTags = listTagsWithDuplicates.stream()
-                .distinct()
-                .collect(Collectors.toList());
-
-        listTags.sort(Comparator.comparing(Tag::toString));
-
-
-        return listTags;
-    }
-
-    @Override
-    public List<Group> getGroupList() {
-        ObservableList<ReadOnlyPerson> personList = addressBook.getPersonList();
-        List<Group> listGroupWithDuplicates = new ArrayList<>();
-        for (int i = 0; i < personList.size(); i++) {
-            ReadOnlyPerson currReadOnlyPerson = personList.get(i);
-
-            Person newPerson = new Person(currReadOnlyPerson);
-            listGroupWithDuplicates.add(newPerson.getGroup());
-        }
-
-        List<Group> listGroups = listGroupWithDuplicates.stream()
-                .distinct()
-                .collect(Collectors.toList());
-
-        listGroups.sort(Comparator.comparing(Group::toString));
-
-
-        return listGroups;
-    }
-```
-###### \java\seedu\address\storage\XmlAdaptedGroup.java
+###### \main\java\seedu\address\storage\XmlAdaptedGroup.java
 ``` java
 /**
  * JAXB-friendly adapted version of the Group.
@@ -518,7 +445,7 @@ public class XmlAdaptedGroup {
 
 }
 ```
-###### \java\seedu\address\storage\XmlSerializableAddressBook.java
+###### \main\java\seedu\address\storage\XmlSerializableAddressBook.java
 ``` java
     @Override
     public ObservableList<Group> getGroupList() {
@@ -534,13 +461,13 @@ public class XmlAdaptedGroup {
         return FXCollections.unmodifiableObservableList(tags);
     }
 ```
-###### \java\seedu\address\ui\PersonCard.java
+###### \main\java\seedu\address\ui\PersonCard.java
 ``` java
     private void initGroups(ReadOnlyPerson person) {
         group.setStyle("-fx-background-color: " + ColorUtil.getUniqueHsbColorForObject(person.getGroup()));
     }
 ```
-###### \resources\view\DarkTheme.css
+###### \main\resources\view\DarkTheme.css
 ``` css
 VBox .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
@@ -553,4 +480,184 @@ VBox .cell_small_label {
     -fx-font-size: 13px;
     -fx-text-fill: #EAECEE;
 }
+```
+###### \test\java\seedu\address\logic\commands\AddCommandTest.java
+``` java
+        @Override
+        public List<Tag> getTagList() {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public List<Group> getGroupList() {
+            fail("This method should not be called.");
+            return null;
+        }
+```
+###### \test\java\seedu\address\logic\commands\ListCommandTest.java
+``` java
+/**
+ * Contains integration tests (interaction with the Model) and unit tests for ListCommand.
+ */
+public class ListCommandTest {
+
+    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    @Test
+    public void execute_listAll_everPersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 7);
+        ListCommand command = prepareCommand("all");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
+    }
+
+    /**
+     * Parses {@code userInput} into a {@code ListCommand}.
+     */
+    private ListCommand prepareCommand(String userInput) {
+        ListCommand command = new ListCommand();
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        return command;
+    }
+
+    /**
+     * Asserts that {@code command} is successfully executed, and<br>
+     *     - the command feedback is equal to {@code expectedMessage}<br>
+     *     - the {@code FilteredList<ReadOnlyPerson>} is equal to {@code expectedList}<br>
+     *     - the {@code AddressBook} in model remains the same after executing the {@code command}
+     */
+    private void assertCommandSuccess(ListCommand command, String expectedMessage, List<ReadOnlyPerson> expectedList) {
+        AddressBook expectedAddressBook = new AddressBook(model.getAddressBook());
+        CommandResult commandResult = command.execute();
+
+        assertEquals(expectedMessage, commandResult.feedbackToUser);
+        assertEquals(expectedList, model.getFilteredPersonList());
+        assertEquals(expectedAddressBook, model.getAddressBook());
+    }
+
+}
+```
+###### \test\java\seedu\address\logic\parser\AddCommandParserTest.java
+``` java
+        // invalid field
+        assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                + ADDRESS_DESC_BOB + GROUP_DESC_SAVING + INVALID_FIELD_DESC
+                + VALID_TAG_FRIEND, CustomField.MESSAGE_FIELD_CONSTRAINTS);
+
+        // invalid group
+        assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                + ADDRESS_DESC_BOB + INVALID_GROUP_DESC + VALID_TAG_FRIEND, Group.MESSAGE_GROUP_CONSTRAINTS);
+```
+###### \test\java\seedu\address\logic\parser\AddressBookParserTest.java
+``` java
+    @Test
+    public void parseCommand_list() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " all") instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommandAlias_list() throws Exception {
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_ALIAS + " all") instanceof ListCommand);
+    }
+```
+###### \test\java\seedu\address\logic\parser\EditCommandParserTest.java
+``` java
+        // add tags
+        userInput = targetIndex.getOneBased() + GROUP_DESC_HEALTH;
+        descriptor = new EditPersonDescriptorBuilder().withGroup(VALID_GROUP_HEALTH).build();
+        expectedCommand = new EditCommand(targetIndex, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
+```
+###### \test\java\seedu\address\logic\parser\ListCommandParserTest.java
+``` java
+public class ListCommandParserTest {
+
+    private ListCommandParser parser = new ListCommandParser();
+
+    @Test
+    public void parse_emptyArg_throwsParseException() {
+        assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_validArgs_returnsFindCommand() {
+        // no leading and trailing whitespaces
+        ListCommand expectedListCommand = new ListCommand();
+
+        assertParseSuccess(parser, "all", expectedListCommand);
+        assertParseSuccess(parser, "tags", expectedListCommand);
+        assertParseSuccess(parser, "groups", expectedListCommand);
+
+    }
+
+    @Test
+    public void parse_invalidArgs_returnsFindCommand() {
+        // no leading and trailing whitespaces
+        ListCommand expectedListCommand = new ListCommand();
+
+        assertParseFailure(parser, "random", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ListCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "all tags", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ListCommand.MESSAGE_USAGE));
+
+    }
+
+}
+```
+###### \test\java\seedu\address\model\AddressBookTest.java
+``` java
+    @Test
+    public void getGroupList_modifyList_throwsUnsupportedOperationException() {
+        thrown.expect(UnsupportedOperationException.class);
+        addressBook.getGroupList().remove(0);
+    }
+```
+###### \test\java\seedu\address\model\UniqueGroupListTest.java
+``` java
+public class UniqueGroupListTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void asObservableList_modifyList_throwsUnsupportedOperationException() {
+        UniqueGroupList uniqueGroupList = new UniqueGroupList();
+        thrown.expect(UnsupportedOperationException.class);
+        uniqueGroupList.asObservableList().remove(0);
+    }
+}
+```
+###### \test\java\seedu\address\testutil\EditPersonDescriptorBuilder.java
+``` java
+    /**
+     * Sets the {@code Group} of the {@code EditPersonDescriptorBuilder} that we are building.
+     */
+    public EditPersonDescriptorBuilder withGroup(String group) {
+        try {
+            ParserUtil.parseGroup(Optional.of(group)).ifPresent(descriptor::setGroup);
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("group is expected to be unique.");
+        }
+        return this;
+    }
+```
+###### \test\java\seedu\address\testutil\PersonBuilder.java
+``` java
+    /**
+     * Sets the {@code Group} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withGroup(String group) {
+        try {
+            this.person.setGroup(new Group(group));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("group is expected to be unique.");
+        }
+        return this;
+    }
+```
+###### \test\java\systemtests\EditCommandSystemTest.java
+``` java
+        /* Case: invalid group -> rejected */
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + INVALID_GROUP_DESC,
+                Group.MESSAGE_GROUP_CONSTRAINTS);
 ```
