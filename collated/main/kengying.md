@@ -1,5 +1,5 @@
 # kengying
-###### \main\java\seedu\address\logic\commands\EditCommand.java
+###### \java\seedu\address\logic\commands\EditCommand.java
 ``` java
         public void setGroup(Group group) {
             this.group = group;
@@ -9,7 +9,7 @@
             return Optional.ofNullable(group);
         }
 ```
-###### \main\java\seedu\address\logic\commands\ListCommand.java
+###### \java\seedu\address\logic\commands\ListCommand.java
 ``` java
 /**
  * Lists all persons/groups/tags in the address book to the user.
@@ -44,7 +44,7 @@ public class ListCommand extends Command {
     }
 }
 ```
-###### \main\java\seedu\address\logic\commands\ListGroupCommand.java
+###### \java\seedu\address\logic\commands\ListGroupCommand.java
 ``` java
 
 /**
@@ -68,7 +68,7 @@ public class ListGroupCommand extends ListCommand {
 
 }
 ```
-###### \main\java\seedu\address\logic\commands\ListTagCommand.java
+###### \java\seedu\address\logic\commands\ListTagCommand.java
 ``` java
 
 /**
@@ -91,7 +91,7 @@ public class ListTagCommand extends ListCommand {
 
 }
 ```
-###### \main\java\seedu\address\logic\parser\AddCommandParser.java
+###### \java\seedu\address\logic\parser\AddCommandParser.java
 ``` java
     /**
      * Returns "" if prefixes contains empty values in the given
@@ -102,19 +102,19 @@ public class ListTagCommand extends ListCommand {
         return value;
     }
 ```
-###### \main\java\seedu\address\logic\parser\AddressBookParser.java
+###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
         case ListCommand.COMMAND_WORD:
         case ListCommand.COMMAND_ALIAS:
             return new ListCommandParser().parse(arguments);
 ```
-###### \main\java\seedu\address\logic\parser\AddressBookParser.java
+###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
     private String firstLetterToLowerCase(String commandWord) {
         return commandWord.substring(0, 1).toLowerCase() + commandWord.substring(1);
     }
 ```
-###### \main\java\seedu\address\logic\parser\ListCommandParser.java
+###### \java\seedu\address\logic\parser\ListCommandParser.java
 ``` java
 /**
  * Parses input arguments and creates a new ListCommand object
@@ -145,7 +145,7 @@ public class ListCommandParser implements Parser<ListCommand> {
 
 }
 ```
-###### \main\java\seedu\address\logic\parser\ParserUtil.java
+###### \java\seedu\address\logic\parser\ParserUtil.java
 ``` java
     /**
      * Parses a {@code Optional<String> group} into an {@code Optional<Group>} if {@code group} is present.
@@ -169,13 +169,13 @@ public class ListCommandParser implements Parser<ListCommand> {
         return groupList;
     }
 ```
-###### \main\java\seedu\address\model\AddressBook.java
+###### \java\seedu\address\model\AddressBook.java
 ``` java
     public void setGroups(List<? extends Group> persons) {
         this.groups.setGroups(groups);
     }
 ```
-###### \main\java\seedu\address\model\AddressBook.java
+###### \java\seedu\address\model\AddressBook.java
 ``` java
     /**
      * Ensures that every group in this person:
@@ -217,14 +217,14 @@ public class ListCommandParser implements Parser<ListCommand> {
     }
 
 ```
-###### \main\java\seedu\address\model\AddressBook.java
+###### \java\seedu\address\model\AddressBook.java
 ``` java
     //// group-level operations
     public void addGroup(Group g) throws UniqueGroupList.DuplicateGroupException {
         groups.add(g);
     }
 ```
-###### \main\java\seedu\address\model\group\Group.java
+###### \java\seedu\address\model\group\Group.java
 ``` java
 /**
  * Represents a Person's group in the address book.
@@ -290,7 +290,7 @@ public class Group implements Comparable<Group>, Comparator<Group> {
 
 }
 ```
-###### \main\java\seedu\address\model\group\UniqueGroupList.java
+###### \java\seedu\address\model\group\UniqueGroupList.java
 ``` java
 /**
  * A list of groups that enforces no nulls and uniqueness between its elements.
@@ -409,7 +409,7 @@ public class UniqueGroupList implements Iterable<Group> {
 
 }
 ```
-###### \main\java\seedu\address\storage\XmlAdaptedGroup.java
+###### \java\seedu\address\storage\XmlAdaptedGroup.java
 ``` java
 /**
  * JAXB-friendly adapted version of the Group.
@@ -445,7 +445,7 @@ public class XmlAdaptedGroup {
 
 }
 ```
-###### \main\java\seedu\address\storage\XmlSerializableAddressBook.java
+###### \java\seedu\address\storage\XmlSerializableAddressBook.java
 ``` java
     @Override
     public ObservableList<Group> getGroupList() {
@@ -461,7 +461,7 @@ public class XmlAdaptedGroup {
         return FXCollections.unmodifiableObservableList(tags);
     }
 ```
-###### \main\java\seedu\address\ui\PersonCard.java
+###### \java\seedu\address\ui\PersonCard.java
 ``` java
     private void initGroups(ReadOnlyPerson person) {
         group.setStyle("-fx-background-color: " + ColorUtil.getUniqueHsbColorForObject(person.getGroup()));
