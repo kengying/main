@@ -467,7 +467,7 @@ public class XmlAdaptedGroup {
         group.setStyle("-fx-background-color: " + ColorUtil.getUniqueHsbColorForObject(person.getGroup()));
     }
 ```
-###### \main\resources\view\DarkTheme.css
+###### \resources\view\DarkTheme.css
 ``` css
 VBox .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
